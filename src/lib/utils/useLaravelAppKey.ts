@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { createHmac } from "crypto";
 
 const useLaravelAppKey = (secret: string) => {
