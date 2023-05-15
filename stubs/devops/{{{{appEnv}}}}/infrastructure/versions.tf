@@ -6,7 +6,7 @@ terraform {
     }
   }
   cloud {
-    organization = "{{{{organizationName}}}}"
+    organization = "{{{{terraformOrganizationName}}}}"
 
     workspaces {
       name = "{{{{appKey}}}}"

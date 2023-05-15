@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: henrotaym/{{{{appKey}}}}-web:0.0.1
+          image: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-web:0.0.1"
           ports:
             - containerPort: 80
           env:

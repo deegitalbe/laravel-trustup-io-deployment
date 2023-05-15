@@ -28,7 +28,7 @@ jobs:
           file: Dockerfile.{{{{appEnv}}}}
           target: cli
           push: true
-          tags: henrotaym/{{{{appKey}}}}-cli:${{ github.sha }}
+          tags: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-cli:${{ github.sha }}"
       - name: Build and push cron image
         uses: docker/build-push-action@v3
         with:
@@ -36,7 +36,7 @@ jobs:
           file: Dockerfile.{{{{appEnv}}}}
           target: cron
           push: true
-          tags: henrotaym/{{{{appKey}}}}-cron:${{ github.sha }}
+          tags: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-cron:${{ github.sha }}"
       - name: Build and push fpm image
         uses: docker/build-push-action@v3
         with:
@@ -44,7 +44,7 @@ jobs:
           file: Dockerfile.{{{{appEnv}}}}
           target: fpm_server
           push: true
-          tags: henrotaym/{{{{appKey}}}}-fpm:${{ github.sha }}
+          tags: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-fpm:${{ github.sha }}"
       - name: Build and push web image
         uses: docker/build-push-action@v3
         with:
@@ -52,7 +52,7 @@ jobs:
           file: Dockerfile.{{{{appEnv}}}}
           target: web_server
           push: true
-          tags: henrotaym/{{{{appKey}}}}-web:${{ github.sha }}
+          tags: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-web:${{ github.sha }}"
       - name: Install and configure kubectl
         # VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
         run: |

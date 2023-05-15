@@ -4,12 +4,12 @@
 
 ### Register workspace
 
-- Create [{{{{appKey}}}} workspace](https://app.terraform.io/app/{{{{organizationName}}}}/workspaces/new)
-- Add `trustup_io_app_key` variable with `{{{{appKey}}}}` value to your [workspace variables](https://app.terraform.io/app/{{{{organizationName}}}}/workspaces/{{{{appKey}}}}/variables)
+- Create [{{{{appKey}}}} workspace](https://app.terraform.io/app/{{{{terraformOrganizationName}}}}/workspaces/new)
+- Add `trustup_io_app_key` variable with `{{{{appKey}}}}` value to your [workspace variables](https://app.terraform.io/app/{{{{terraformOrganizationName}}}}/workspaces/{{{{appKey}}}}/variables)
 
 ### Create infrastructure
 
-In your `infrastructure` folder run
+In `devops/{{{{appEnv}}}}/infrastructure` folder run
 
 ```shell
 terraform init && terraform apply
@@ -27,19 +27,19 @@ doctl kubernetes cluster kubeconfig save your_cluster_id_here
 
 ## Configure github secrets
 
-### Create environments
+### Create environment
 
-You should configure `production` and `staging` [environments](https://github.com/{{{{githubOrganizationName}}}}/{{{{appKey}}}}/settings/environments) for your repository
+Create [{{{{appEnv}}}} environment](https://github.com/{{{{githubOrganizationName}}}}/{{{{appKey}}}}/settings/environments) in your repository
 
-### Save doctl cluster id to desired environment
+### Save cluster id to your environment secrets
 
 ```shell
-DIGITALOCEAN_KUBERNETES_CLUSTER_ID=your_cluster_id_here
+DIGITALOCEAN_KUBERNETES_CLUSTER_ID=clusted_id
 ```
 
 ## Configure kubernetes cluster
 
-In your `kubernetes` folder run
+In `devops/{{{{appEnv}}}}/kubernetes` folder run
 
 ```shell
 kubectl create namespace traefik && kubectl create namespace app
@@ -59,7 +59,7 @@ Get load balancer external IP address
 kubectl get all
 ```
 
-Add a [DNS record](https://dash.cloudflare.com/) pointing to the external IP of your load balancer.
+Add a [DNS record](https://dash.cloudflare.com) pointing to the external IP of your load balancer.
 
 ### Apply app configuration
 
@@ -67,7 +67,7 @@ Add a [DNS record](https://dash.cloudflare.com/) pointing to the external IP of 
 kubens app && kubectl apply -f app --recursive
 ```
 
-### Reloader
+### Add reloader
 
 ```shell
 kubens default && kubectl apply -f https://raw.githubusercontent.com/stakater/Reloader/master/deployments/kubernetes/reloader.yaml
