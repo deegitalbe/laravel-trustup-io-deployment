@@ -21,8 +21,9 @@ const useScaffolding = () => {
 
   const folder = usePrompt("Folder location [.]", ".");
   const location = useCurrentPath(folder);
+  const defaultAppKey = location.split("/").slice(-1)[0];
 
-  const appKey = usePrompt("App key");
+  const appKey = usePrompt(`App key [${defaultAppKey}]`, defaultAppKey);
   const laravelAppKey = useLaravelAppKey(appKey);
   const appEnv = usePrompt("App environment [production]", "production");
   const isProduction = appEnv === "production";
@@ -45,7 +46,6 @@ const useScaffolding = () => {
     "Dockerhub organization [henrotaym]",
     "henrotaym"
   );
-  
 
   const cloudflareKey = usePrompt("Cloudflare key");
 
@@ -67,7 +67,6 @@ const useScaffolding = () => {
     appEnv,
     appUrl,
     terraformCloudOrganizationName,
-    terraformCloudWorkspace,
     dockerhubOrganizationName,
     githubOrganizationName,
     cloudflareKey,
@@ -91,6 +90,7 @@ const useScaffolding = () => {
     ...displayedData,
     laravelAppKey,
     branchName,
+    terraformCloudWorkspace,
   });
 
   generator.copy(useStubsPath(), location);
