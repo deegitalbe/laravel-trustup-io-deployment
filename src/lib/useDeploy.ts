@@ -34,14 +34,18 @@ const useScaffolding = () => {
     "Terraform cloud organization [deegital]",
     "deegital"
   );
+  const terraformCloudWorkspace = isProduction ? appKey : `${appKey}-staging`;
+
   const githubOrganizationName = usePrompt(
     `Github organization [${terraformCloudOrganizationName}be]`,
     `${terraformCloudOrganizationName}be`
   );
+
   const dockerhubOrganizationName = usePrompt(
     "Dockerhub organization [henrotaym]",
     "henrotaym"
   );
+  
 
   const cloudflareKey = usePrompt("Cloudflare key");
 
@@ -63,6 +67,7 @@ const useScaffolding = () => {
     appEnv,
     appUrl,
     terraformCloudOrganizationName,
+    terraformCloudWorkspace,
     dockerhubOrganizationName,
     githubOrganizationName,
     cloudflareKey,
