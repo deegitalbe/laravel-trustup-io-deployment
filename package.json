@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Scaffolding deployments folder for our laravel projects",
   "files": [
-    "dist"
+    "dist",
+    "stubs"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -15,7 +16,7 @@
   },
   "types": "dist/index.d.ts",
   "bin": {
-    "laravel-trustup-io-deployment": "./bin/deploy"
+    "laravel-trustup-io-deployment": "./bin/laravel-trustup-io-deployment.js"
   },
   "publishConfig": {
     "access": "public"

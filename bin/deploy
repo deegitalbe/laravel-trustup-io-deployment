@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-const crypto = require("crypto");
-const appKey = "trustup-io-test";
-const laravelAppKey = crypto.createHmac("sha256", appKey).digest("base64");
-console.log(`base64:${laravelAppKey}`);
