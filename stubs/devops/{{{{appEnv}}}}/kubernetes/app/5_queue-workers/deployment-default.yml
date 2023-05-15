@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: app
+  name: laravel-in-kubernetes-queue-worker-default
+  labels:
+    tier: backend
+    layer: queue-worker
+    queue: default
+  annotations:
+    configmap.reloader.stakater.com/reload: "laravel-in-kubernetes"
+    secret.reloader.stakater.com/reload: "laravel-in-kubernetes"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: backend
+      layer: queue-worker
+      queue: default
+  template:
+    metadata:
+      labels:
+        tier: backend
+        layer: queue-worker
+        queue: default
+    spec:
+      containers:
+        - name: queue-worker
+          image: henrotaym/{{{{appKey}}}}-cli:0.0.1
+          command:
+            - php
+          args:
+            - artisan
+            - queue:work
+            - --queue=default
+            - --tries=3
+            - --max-jobs=1000
+          ports:
+            - containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: laravel-in-kubernetes
+            - secretRef:
+                name: laravel-in-kubernetes

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: app
+  name: laravel-in-kubernetes-cron
+  labels:
+    tier: backend
+    layer: cron
+  annotations:
+    configmap.reloader.stakater.com/reload: "laravel-in-kubernetes"
+    secret.reloader.stakater.com/reload: "laravel-in-kubernetes"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: backend
+      layer: cron
+  template:
+    metadata:
+      labels:
+        tier: backend
+        layer: cron
+    spec:
+      containers:
+        - name: cron
+          image: henrotaym/{{{{appKey}}}}-cron:0.0.1
+          envFrom:
+            - configMapRef:
+                name: laravel-in-kubernetes
+            - secretRef:
+                name: laravel-in-kubernetes
