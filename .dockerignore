@@ -29,4 +29,5 @@ README.md
 
 /vendor
 /node_module
-/devops
+/devops/**/infrastructure
+/devops/**/kubernetes
