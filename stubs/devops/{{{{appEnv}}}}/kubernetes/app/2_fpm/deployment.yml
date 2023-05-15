@@ -23,7 +23,7 @@ spec:
     spec:
       initContainers:
         - name: migrations
-          image: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-cli:0.0.1"
+          image: "{{{{dockerhubOrganizationName}}}}/{{{{appKey}}}}-cli:0.0.1"
           command:
             - php
           args:
@@ -37,7 +37,7 @@ spec:
                 name: laravel-in-kubernetes
       containers:
         - name: fpm
-          image: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-fpm:d4304bd05f8ada0777c3dcb38d9ade915b3ebe81"
+          image: "{{{{dockerhubOrganizationName}}}}/{{{{appKey}}}}-fpm:d4304bd05f8ada0777c3dcb38d9ade915b3ebe81"
           command: ["/bin/sh"]
           args: [
               "-c",

@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: cron
-          image: "{{{{dockerOrganizationName}}}}/{{{{appKey}}}}-cron:0.0.1"
+          image: "{{{{dockerhubOrganizationName}}}}/{{{{appKey}}}}-cron:0.0.1"
           envFrom:
             - configMapRef:
                 name: laravel-in-kubernetes

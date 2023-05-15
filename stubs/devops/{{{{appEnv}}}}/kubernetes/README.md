@@ -4,8 +4,8 @@
 
 ### Register workspace
 
-- Create [{{{{appKey}}}} workspace](https://app.terraform.io/app/{{{{terraformOrganizationName}}}}/workspaces/new)
-- Add `trustup_io_app_key` variable with `{{{{appKey}}}}` value to your [workspace variables](https://app.terraform.io/app/{{{{terraformOrganizationName}}}}/workspaces/{{{{appKey}}}}/variables)
+- Create [{{{{appKey}}}} workspace](https://app.terraform.io/app/{{{{terraformCloudOrganizationName}}}}/workspaces/new)
+- Add `trustup_io_app_key` variable with `{{{{appKey}}}}` value to your [workspace variables](https://app.terraform.io/app/{{{{terraformCloudOrganizationName}}}}/workspaces/{{{{appKey}}}}/variables)
 
 ### Create infrastructure
 

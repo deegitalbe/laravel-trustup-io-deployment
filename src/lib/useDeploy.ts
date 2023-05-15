@@ -30,16 +30,16 @@ const useScaffolding = () => {
   const appUrl = usePrompt(`App url [${defaultAppUrl}]`, defaultAppUrl);
   const branchName = isProduction ? "main" : "release/v*";
 
-  const terraformOrganizationName = usePrompt(
-    "Terraform organization [deegital]",
+  const terraformCloudOrganizationName = usePrompt(
+    "Terraform cloud organization [deegital]",
     "deegital"
   );
   const githubOrganizationName = usePrompt(
-    `Github organization [${terraformOrganizationName}be]`,
-    `${terraformOrganizationName}be`
+    `Github organization [${terraformCloudOrganizationName}be]`,
+    `${terraformCloudOrganizationName}be`
   );
-  const dockerOrganizationName = usePrompt(
-    "Docker organization [henrotaym]",
+  const dockerhubOrganizationName = usePrompt(
+    "Dockerhub organization [henrotaym]",
     "henrotaym"
   );
 
@@ -62,8 +62,8 @@ const useScaffolding = () => {
     appKey,
     appEnv,
     appUrl,
-    terraformOrganizationName,
-    dockerOrganizationName,
+    terraformCloudOrganizationName,
+    dockerhubOrganizationName,
     githubOrganizationName,
     cloudflareKey,
     flareKey,
