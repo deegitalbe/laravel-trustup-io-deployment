@@ -74,4 +74,4 @@ jobs:
       - name: Trigger kubernetes deployment
         run: |
           export APP_VERSION=${{ github.sha }}
-          kubectl apply -k kubernetes
+          kubectl apply -k devops/{{{{appEnv}}}}/kubernetes
