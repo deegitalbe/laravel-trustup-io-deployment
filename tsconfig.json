@@ -21,13 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    ".",
-  ],
-  "exclude": [
-    "node_modules",
-    "**/__tests__/*",
-    "bin",
-    "dist"
-  ]
+  "include": ["."],
+  "exclude": ["node_modules", "**/__tests__/*", "bin", "dist"]
 }

@@ -4,7 +4,7 @@ kind: Kustomization
 # Generate a ConfigMap based on the environment variables in the file `.env`.
 configMapGenerator:
   - name: deployments-config-map
-    envs: 
+    envs:
       - .env.production
 
 replacements:

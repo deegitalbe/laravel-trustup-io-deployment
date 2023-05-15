@@ -20,15 +20,15 @@ spec:
         layer: redis
     spec:
       containers:
-      - name: redis
-        image: redis:7.0.4
-        command: ["redis-server", "--appendonly", "yes"]
-        ports:
-        - containerPort: 6379
-          name: web
-        volumeMounts:
-        - name: redis-aof
-          mountPath: /data
+        - name: redis
+          image: redis:7.0.4
+          command: ["redis-server", "--appendonly", "yes"]
+          ports:
+            - containerPort: 6379
+              name: web
+          volumeMounts:
+            - name: redis-aof
+              mountPath: /data
       volumes:
         - name: redis-aof
           persistentVolumeClaim:

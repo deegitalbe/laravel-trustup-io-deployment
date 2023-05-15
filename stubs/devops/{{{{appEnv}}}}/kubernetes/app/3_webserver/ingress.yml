@@ -20,13 +20,13 @@ metadata:
     layer: webserver
 spec:
   rules:
-  - host: "{{{{appUrl}}}}"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: laravel-in-kubernetes-webserver
-            port:
-              number: 80
+    - host: "{{{{appUrl}}}}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: laravel-in-kubernetes-webserver
+                port:
+                  number: 80

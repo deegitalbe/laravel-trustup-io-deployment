@@ -1,3 +1,1 @@
-// Silence is golder
-
-export default {};
+export { default as useDeploy } from "./useDeploy";
