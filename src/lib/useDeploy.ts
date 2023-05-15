@@ -35,8 +35,8 @@ const useScaffolding = () => {
     "deegital"
   );
   const githubOrganizationName = usePrompt(
-    `Organization name [{${organizationName}}be]`,
-    `{${organizationName}}be`
+    `Github organization name [${organizationName}be]`,
+    `${organizationName}be`
   );
 
   const cloudflareKey = usePrompt("Cloudflare key");
