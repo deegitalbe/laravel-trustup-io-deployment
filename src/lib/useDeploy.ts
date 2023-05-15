@@ -35,7 +35,7 @@ const useScaffolding = () => {
     "Terraform cloud organization [deegital]",
     "deegital"
   );
-  const terraformCloudWorkspace = isProduction ? appKey : `${appKey}-staging`;
+  const environmentReadyAppKey = isProduction ? appKey : `${appKey}-staging`;
 
   const githubOrganizationName = usePrompt(
     `Github organization [${terraformCloudOrganizationName}be]`,
@@ -90,7 +90,7 @@ const useScaffolding = () => {
     ...displayedData,
     laravelAppKey,
     branchName,
-    terraformCloudWorkspace,
+    environmentReadyAppKey,
   });
 
   generator.copy(useStubsPath(), location);
