@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.0.0
+
+### Major Changes
+
+- ef7291e: Moving to centralized workflow.
+
 ## 0.0.4
 
 ### Patch Changes
