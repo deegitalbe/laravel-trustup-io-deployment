@@ -377,10 +377,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.40.0.tgz#3ba73359e11f5a7bd3e407f70b3528abfae69cec"
   integrity sha512-ElyB54bJIhXQYVKjDSvCkPO1iU1tSAeVQJbllWJq1XQSmmA4dgFk8CbiBGpiOPxleE48vDogxCtmMYku4HSVLA==
 
-"@henrotaym/scaffolding-utils@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@henrotaym/scaffolding-utils/-/scaffolding-utils-1.1.1.tgz#068bbf1dee1887cf13422aa52ec664095ea394ae"
-  integrity sha512-fPZZQnPdVCdUje1AjFznICB+tjnr4Hbr4txpp1gRYphUUofdOGiKuWXbocIpYmX0/sAWdxXC+9Gkt90Qef0krQ==
+"@henrotaym/scaffolding-utils@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@henrotaym/scaffolding-utils/-/scaffolding-utils-1.2.1.tgz#1a67d60bda9d580fa2a84b8b41637238816f09f3"
+  integrity sha512-5pHmNmWCRbJuTgNJvxG/wvBDSUJ60LYRAihqqcDuUsYPDWQhyx3k7AkPj4WvcN+xeMflopTL+6SQutdtGCIRHw==
   dependencies:
     minimist "^1.2.8"
     mustache "^4.2.0"

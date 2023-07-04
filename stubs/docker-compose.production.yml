@@ -1,0 +1,84 @@
+version: "3"
+services:
+
+  fpm_server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.production
+      target: fpm_server
+    image: {{{{dockerhubOrganizationName}}}}/{{{{appKey}}}}-fpm:0.0.1
+    # By default the .env in the project root will be loaded as the environment for all containers
+    environment:
+      APP_DEBUG: "true"
+    networks:
+      - {{{{appKey}}}}-sail
+
+  web_server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.production
+      target: web_server
+    image: {{{{dockerhubOrganizationName}}}}/{{{{appKey}}}}-web:0.0.1
+    ports:
+      - "${APP_PORT:-48097}:80"
+    environment:
+      # We need to pass in the new FPM hst as the name of the fpm container on port 9000
+      FPM_HOST: "fpm_server:9000"
+    networks:
+      - {{{{appKey}}}}-prod-sail
+    depends_on:
+      - fpm_server
+
+  cron:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.production
+      target: cron
+    image: {{{{dockerhubOrganizationName}}}}/{{{{appKey}}}}-cron:0.0.1
+    networks:
+      - {{{{appKey}}}}-sail
+
+  {{{{appKey}}}}-mysql:
+    container_name: {{{{appKey}}}}-mysql
+    image: "mysql/mysql-server:8.0"
+    ports:
+      - "${FORWARD_DB_PORT:-43306}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - {{{{appKey}}}}-sail-mysql-prod:/var/lib/mysql
+      - "./vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh"
+    networks:
+      - {{{{appKey}}}}-sail
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      retries: 3
+      timeout: 5s
+
+  {{{{appKey}}}}-redis:
+    container_name: {{{{appKey}}}}-redis
+    image: "redis:alpine"
+    ports:
+      - "${FORWARD_REDIS_PORT:-46379}:6379"
+    volumes:
+      - {{{{appKey}}}}-sail-redis-prod:/data
+    networks:
+      - {{{{appKey}}}}-sail
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      retries: 3
+      timeout: 5s
+
+networks:
+  {{{{appKey}}}}-sail:
+    driver: bridge
+volumes:
+  {{{{appKey}}}}-sail-mysql-prod:
+    driver: local
+  {{{{appKey}}}}-sail-redis-prod:
+    driver: local

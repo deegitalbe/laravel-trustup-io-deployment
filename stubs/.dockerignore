@@ -27,7 +27,5 @@ docker-compose.yml
 Dockerfile
 README.md
 
-/vendor
-/node_module
-/devops/**/infrastructure
-/devops/**/kubernetes
+vendor
+devops/infrastructure

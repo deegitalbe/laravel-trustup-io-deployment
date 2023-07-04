@@ -1,0 +1,55 @@
+additionalArguments: []
+
+logs:
+  # Configure log settings here...
+  general:
+    level: ERROR
+
+ports:
+  # Configure your entrypoints here...
+  web:
+    # (optional) Permanent Redirect to HTTPS
+    redirectTo: websecure
+    forwardedHeaders:
+      insecure: true
+  websecure:
+    tls:
+      enabled: true
+    forwardedHeaders:
+      insecure: true
+
+env: []
+
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: traefik-tls-cert
+
+# Disable Dashboard
+ingressRoute:
+  dashboard:
+    enabled: false
+
+# Persistent Storage
+persistence:
+  enabled: false
+
+certResolvers: {}
+
+deployment:
+  initContainers: []
+
+podSecurityContext:
+  #  # /!\ When setting fsGroup, Kubernetes will recursively changes ownership and
+  #  # permissions for the contents of each volume to match the fsGroup. This can
+  #  # be an issue when storing sensitive content like TLS Certificates /!\
+  fsGroup: 65532
+  fsGroupChangePolicy: "OnRootMismatch"
+  runAsGroup: 65532
+  runAsNonRoot: true
+  runAsUser: 65532
+
+# Set Traefik as your default Ingress Controller, according to Kubernetes 1.19+ changes.
+ingressClass:
+  enabled: true
+  isDefaultClass: true

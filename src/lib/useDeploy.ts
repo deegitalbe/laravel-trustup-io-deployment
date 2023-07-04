@@ -8,8 +8,8 @@ import {
   usePackageStubsPath,
   usePrompt,
   useSentence,
+  useLastFolderName,
 } from "@henrotaym/scaffolding-utils";
-import { useAppUrl, useLaravelAppKey } from "./utils";
 
 const useStubsPath = usePackageStubsPath(
   "@deegital/laravel-trustup-io-deployment"
@@ -21,59 +21,17 @@ const useScaffolding = () => {
 
   const folder = usePrompt("Folder location [.]", ".");
   const location = useCurrentPath(folder);
-  const defaultAppKey = location.split("/").slice(-1)[0];
-
+  const defaultAppKey = useLastFolderName(location);
   const appKey = usePrompt(`App key [${defaultAppKey}]`, defaultAppKey);
-  const laravelAppKey = useLaravelAppKey(appKey);
-  const appEnv = usePrompt("App environment [production]", "production");
-  const isProduction = appEnv === "production";
-  const defaultAppUrl = useAppUrl(isProduction, appKey);
-  const appUrl = usePrompt(`App url [${defaultAppUrl}]`, defaultAppUrl);
-  const branchName = isProduction ? "main" : "release/v*";
-
-  const terraformCloudOrganizationName = usePrompt(
-    "Terraform cloud organization [deegital]",
-    "deegital"
-  );
-  const environmentReadyAppKey = isProduction ? appKey : `${appKey}-staging`;
-
-  const githubOrganizationName = usePrompt(
-    `Github organization [${terraformCloudOrganizationName}be]`,
-    `${terraformCloudOrganizationName}be`
-  );
-
   const dockerhubOrganizationName = usePrompt(
     "Dockerhub organization [henrotaym]",
     "henrotaym"
   );
 
-  const cloudflareKey = usePrompt("Cloudflare key");
-
-  const flareKey = usePrompt("Flare key");
-
-  const mediaUrl = usePrompt(
-    "Media url [media.trustup.io]",
-    "media.trustup.io"
-  );
-  const messagingUrl = usePrompt(
-    "Messaging url [messaging.trustup.io]",
-    "messaging.trustup.io"
-  );
-  const authUrl = usePrompt("Auth url [auth.trustup.io]", "auth.trustup.io");
-
   const displayedData = {
     location,
     appKey,
-    appEnv,
-    appUrl,
-    terraformCloudOrganizationName,
     dockerhubOrganizationName,
-    githubOrganizationName,
-    cloudflareKey,
-    flareKey,
-    mediaUrl,
-    messagingUrl,
-    authUrl,
   };
 
   useDisplayJson(displayedData);
@@ -86,12 +44,7 @@ const useScaffolding = () => {
     return;
   }
 
-  const generator = useGenerator({
-    ...displayedData,
-    laravelAppKey,
-    branchName,
-    environmentReadyAppKey,
-  });
+  const generator = useGenerator(displayedData);
 
   generator.copy(useStubsPath(), location);
 
