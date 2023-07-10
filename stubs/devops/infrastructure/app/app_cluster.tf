@@ -1,6 +1,6 @@
 data "digitalocean_kubernetes_versions" "kubernetes-version" {}
 
-data "digitalocean_sizes" "main" {
+data "digitalocean_sizes" "app_cluster" {
   filter {
     key    = "vcpus"
     values = [1]
@@ -10,10 +10,15 @@ data "digitalocean_sizes" "main" {
     key    = "memory"
     values = [2048]
   }
+
+  sort {
+    key       = "price_monthly"
+    direction = "asc"
+  }
 }
 
-output "app_cluster_size" {
-  value = "${element(data.digitalocean_sizes.main.sizes, 0).slug}"
+locals {
+  app_cluster_size = element(data.digitalocean_sizes.app_cluster.sizes, 0).slug
 }
 
 resource "digitalocean_kubernetes_cluster" "laravel-in-kubernetes" {
@@ -37,7 +42,7 @@ resource "digitalocean_kubernetes_cluster" "laravel-in-kubernetes" {
   node_pool {
     # name = data.doppler_secrets.app.map.TRUSTUP_APP_KEY
     name = var.TRUSTUP_APP_KEY_SUFFIXED
-    size = "${element(data.digitalocean_sizes.main.sizes, 0).slug}"
+    size = local.app_cluster_size
     node_count = 1
     # We can autoscale our cluster according to use, and if it gets high,
     # We can auto scale to maximum 5 nodes.
@@ -64,4 +69,8 @@ resource "kubernetes_namespace" "traefik" {
   metadata {
     name = "traefik"
   }
+}
+
+output "app_cluster_size" {
+  value = local.app_cluster_size
 }
