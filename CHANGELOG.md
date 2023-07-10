@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.1.0
+
+### Minor Changes
+
+- 19fcf38: Adding allowed ips to database firewall.
+
 ## 1.0.0
 
 ### Major Changes
