@@ -40,27 +40,7 @@ resource "kubernetes_deployment" "fpm" {
               }
             }
             image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.cli.name)
-            name = "migrations-system"
-        }
-        init_container {
-            command = ["php"]
-            args = [
-              "artisan",
-              "tenants:migrate",
-              "--force",
-            ]
-            env_from {
-              secret_ref {
-                name = kubernetes_secret.app_commons_token.metadata[0].name
-              }
-            }
-            env_from {
-              secret_ref {
-                name = kubernetes_secret.app_token.metadata[0].name
-              }
-            }
-            image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.cli.name)
-            name = "migrations-tenant"
+            name = "migrations"
         }
         container {
           command = ["/bin/sh"]
