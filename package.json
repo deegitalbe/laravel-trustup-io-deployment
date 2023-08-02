@@ -1,6 +1,6 @@
 {
   "name": "@deegital/laravel-trustup-io-deployment",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Scaffolding deployments folder for our laravel projects",
   "files": [
     "dist",
