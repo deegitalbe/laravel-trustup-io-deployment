@@ -21,7 +21,7 @@ locals {
     version = "8"
   }
   allowed_ips = nonsensitive(split(",", data.doppler_secrets.ci_commons.map.DIGITALOCEAN_DATABASE_ALLOWED_IPS))
-  database_cluster_size = element(data.digitalocean_sizes.database_cluster.sizes, 0).slug
+  database_cluster_size = "db-${element(data.digitalocean_sizes.database_cluster.sizes, 0).slug}"
 }
 
 resource "digitalocean_database_cluster" "laravel-in-kubernetes" {
