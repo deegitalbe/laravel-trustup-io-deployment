@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.1.2
+
+### Patch Changes
+
+- e882b13: Messed up db size.
+
 ## 1.1.1
 
 ### Patch Changes
