@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.1.1
+
+### Patch Changes
+
+- a55c335: Wrong migration init container.
+
 ## 1.1.0
 
 ### Minor Changes
