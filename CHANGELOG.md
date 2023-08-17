@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.1.3
+
+### Patch Changes
+
+- b0e8e98: Adding staging branch to staging environment deployment.
+
 ## 1.1.2
 
 ### Patch Changes
