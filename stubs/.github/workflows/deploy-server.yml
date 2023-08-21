@@ -26,7 +26,6 @@ jobs:
           app_key: ${{ github.event.repository.name }}
           github_branch: ${{ github.ref }}
     outputs:
-      DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS: ${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}
       TRUSTUP_APP_KEY: ${{ steps.terraform_variables.outputs.trustup_app_key }}
       TRUSTUP_APP_KEY_SUFFIX: ${{ steps.terraform_variables.outputs.trustup_app_key_suffix }}
       TRUSTUP_APP_KEY_SUFFIXED: ${{ steps.terraform_variables.outputs.trustup_app_key_suffixed }}
@@ -95,7 +94,7 @@ jobs:
       run:
         working-directory: devops/infrastructure/environments/main
     env:
-      TF_VAR_DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS: "${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
+      TF_VAR_DOPPLER_ACCESS_TOKEN_USER: "${{ secrets.DOPPLER_ACCESS_TOKEN_USER }}"
       TF_VAR_TRUSTUP_APP_KEY: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
     steps:
       - name: Checkout repository
@@ -122,7 +121,7 @@ jobs:
       run:
         working-directory: devops/infrastructure/environments/dev
     env:
-      TF_VAR_DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS: "${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
+      TF_VAR_DOPPLER_ACCESS_TOKEN_USER: "${{ secrets.DOPPLER_ACCESS_TOKEN_USER }}"
       TF_VAR_TRUSTUP_APP_KEY: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
       TF_VAR_DEV_ENVIRONMENT_TO_ADD: "${{ needs.prepare_variables.outputs.DEV_ENVIRONMENT_TO_DEPLOY }}"
     steps:
@@ -152,7 +151,7 @@ jobs:
       run:
         working-directory: devops/infrastructure/app
     env:
-      TF_VAR_DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS: "${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
+      TF_VAR_DOPPLER_ACCESS_TOKEN_USER: "${{ secrets.DOPPLER_ACCESS_TOKEN_USER }}"
       TF_VAR_TRUSTUP_APP_KEY: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
       TF_VAR_TRUSTUP_APP_KEY_SUFFIX: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIX }}"
       TF_VAR_TRUSTUP_APP_KEY_SUFFIXED: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"

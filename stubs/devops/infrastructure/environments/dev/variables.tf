@@ -1,4 +1,4 @@
-variable "DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS" {
+variable "DOPPLER_ACCESS_TOKEN_USER" {
   type = string
 }
 

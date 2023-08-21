@@ -1,3 +1,17 @@
+provider "doppler" {
+  doppler_token = var.DOPPLER_ACCESS_TOKEN_USER
+}
+
+data "doppler_secrets" "ci_commons" {
+  project = "trustup-io-ci-commons"
+  config = "github"
+}
+
+data "doppler_secrets" "app" {
+  project = var.TRUSTUP_APP_KEY
+  config = local.DOPPLER_APP_CONFIG_NAME
+}
+
 provider "digitalocean" {
   token = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_ACCESS_TOKEN
   spaces_access_id  = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_SPACES_ACCESS_KEY_ID
@@ -7,41 +21,6 @@ provider "digitalocean" {
 provider "cloudflare" {
   api_key = data.doppler_secrets.ci_commons.map.CLOUDFLARE_API_TOKEN
   email = data.doppler_secrets.ci_commons.map.CLOUDFLARE_API_EMAIL
-}
-
-provider "doppler" {
-  doppler_token = var.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS
-  alias = "ci_commons"
-}
-
-data "doppler_secrets" "ci_commons" {
-  provider = doppler.ci_commons
-}
-
-provider "doppler" {
-  doppler_token = lookup(data.doppler_secrets.ci_commons.map, "DOPPLER_SERVICE_TOKEN_${replace(upper(var.TRUSTUP_APP_KEY), "-", "_")}_CI")
-  alias = "app_ci"
-}
-
-data "doppler_secrets" "app_ci" {
-  provider = doppler.app_ci
-}
-
-locals {
-  DOPPLER_APP_SERVICE_TOKEN = lookup(data.doppler_secrets.app_ci.map, "DOPPLER_SERVICE_TOKEN_${replace(upper(local.DOPPLER_APP_CONFIG_NAME), "-", "_")}")
-}
-
-provider "doppler" {
-  doppler_token = local.DOPPLER_APP_SERVICE_TOKEN
-  alias = "app"
-}
-
-data "doppler_secrets" "app" {
-  provider = doppler.app
-}
-
-provider "doppler" {
-  doppler_token = data.doppler_secrets.ci_commons.map.DOPPLER_ACCESS_TOKEN_USER
 }
 
 provider "kubernetes" {

@@ -15,7 +15,7 @@ resource "kubernetes_secret" "ci_commons_token" {
     namespace = local.doppler.namespace
   }
   data = {
-    serviceToken = "${data.doppler_secrets.ci_commons.map.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS}"
+    serviceToken = doppler_service_token.ci_commons.key
   }
 }
 
@@ -42,6 +42,6 @@ resource "kubernetes_secret" "app_token" {
     namespace = local.doppler.namespace
   }
   data = {
-    serviceToken = "${local.DOPPLER_APP_SERVICE_TOKEN}"
+    serviceToken = doppler_service_token.app.key
   }
 }

@@ -22,9 +22,3 @@ locals {
   dev_related_environments_stringified = local.dev_related_environments == [] ? "" : join(",", local.dev_related_environments)
 }
 
-locals {
-  ci_commons = {
-    project = data.doppler_secrets.ci_commons.map.DOPPLER_PROJECT
-    config = data.doppler_secrets.ci_commons.map.DOPPLER_CONFIG
-  }
-}
