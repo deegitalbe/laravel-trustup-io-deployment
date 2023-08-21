@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.1.4
+
+### Patch Changes
+
+- be3ad4b: Refactoring token service generation.
+
 ## 1.1.3
 
 ### Patch Changes
