@@ -2,7 +2,12 @@
 resource "digitalocean_spaces_bucket" "main" {
   name   = var.TRUSTUP_APP_KEY_SUFFIXED
   region = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_CLUSTER_REGION
+}
 
+# CREATING CORS RULE
+resource "digitalocean_spaces_bucket_cors_configuration" "main" {
+  bucket = digitalocean_spaces_bucket.main.id
+  region = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_CLUSTER_REGION
   cors_rule {
     allowed_methods = ["GET"]
     allowed_origins = ["*"]
