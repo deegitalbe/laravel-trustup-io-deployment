@@ -1,5 +1,12 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.1.5
+
+### Patch Changes
+
+- b64443c: Avoiding minor kubernetes cluster upgrade.
+- 5d2e7b3: Updating deprecated bucket cors configuration
+
 ## 1.1.4
 
 ### Patch Changes
