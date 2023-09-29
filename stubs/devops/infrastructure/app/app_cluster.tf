@@ -1,4 +1,7 @@
-data "digitalocean_kubernetes_versions" "kubernetes-version" {}
+data "digitalocean_kubernetes_versions" "kubernetes-version" {
+  // @TODO when deployed, force version prefix here!
+  # version_prefix = "1.28."
+}
 
 data "digitalocean_sizes" "app_cluster" {
   filter {
