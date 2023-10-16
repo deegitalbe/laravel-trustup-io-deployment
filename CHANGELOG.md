@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.2.0
+
+### Minor Changes
+
+- a19a8e0: Matching new requirements.
+
 ## 1.1.5
 
 ### Patch Changes
