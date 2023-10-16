@@ -14,6 +14,13 @@ resource "kubernetes_deployment" "cron" {
   }
   spec {
     replicas = 1
+    strategy {
+      type = "RollingUpdate"
+      rolling_update {
+        max_surge = 4
+        max_unavailable = 0
+      }
+    }
     selector {
       match_labels = local.app.cron.labels
     }
@@ -38,5 +45,9 @@ resource "kubernetes_deployment" "cron" {
         }
       }
     }
+  }
+  timeouts {
+    create = "5m"
+    update = "5m"
   }
 }

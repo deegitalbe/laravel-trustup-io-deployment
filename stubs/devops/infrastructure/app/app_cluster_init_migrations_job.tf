@@ -1,45 +1,32 @@
-resource "kubernetes_deployment" "default_queue_worker" {
+resource "kubernetes_job" "migrations" {
   depends_on = [
     kubernetes_secret.app_commons_token,
     kubernetes_secret.app_token,
     kubectl_manifest.doppler,
     kubectl_manifest.doppler_app_commons_secret,
-    kubectl_manifest.doppler_app_secret
+    kubectl_manifest.doppler_app_secret,
+    kubernetes_deployment.fpm
   ]
   metadata {
-    namespace = kubernetes_namespace.app.metadata[0].name
-    name = local.app.queue_worker.default.name
-    labels = local.app.queue_worker.default.labels
     annotations = local.app.commons.annotations
+    labels = local.app.init.labels
+    name = "migrations"
+    namespace = kubernetes_namespace.app.metadata[0].name
   }
   spec {
-    replicas = 1
-    strategy {
-      type = "RollingUpdate"
-      rolling_update {
-        max_surge = 4
-        max_unavailable = 0
-      }
-    }
-    selector {
-      match_labels = local.app.queue_worker.default.labels
-    }
     template {
       metadata {
-        labels = local.app.queue_worker.default.labels
+        labels = local.app.init.labels
       }
       spec {
         container {
-          name = local.app.queue_worker.default.name
+          name = "migrations"
           image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.cli.name)
-          command = ["php"]
+          command = ["/bin/sh"]
           args = [
-            "artisan",
-            "horizon",
+            "-c",
+            "php artisan migrate --force && php artisan tenants:migrate --force",
           ]
-          port {
-            container_port = 9000
-          }
           env_from {
             secret_ref {
               name = kubernetes_secret.app_commons_token.metadata[0].name
@@ -51,11 +38,8 @@ resource "kubernetes_deployment" "default_queue_worker" {
             }
           }
         }
+        restart_policy = "Never"
       }
     }
-  }
-  timeouts {
-    create = "5m"
-    update = "5m"
   }
 }

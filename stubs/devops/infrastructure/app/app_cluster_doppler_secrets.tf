@@ -2,6 +2,16 @@ locals {
   DOPPLER_APP_CONFIG_NAME=replace(var.TRUSTUP_APP_KEY_SUFFIX == "" ? var.APP_ENVIRONMENT : var.TRUSTUP_APP_KEY_SUFFIX , "-", "_")
 }
 
+data "digitalocean_kubernetes_versions" "latest_kubernetes_version" {}
+
+locals {
+  kubernetes_latest_version = data.digitalocean_kubernetes_versions.latest_kubernetes_version.latest_version
+}
+
+locals {
+  kubernetes_latest_version_prefix = "${join(".", slice(split(".", local.kubernetes_latest_version), 0, 2))}."
+}
+
 resource "doppler_secret" "digitalocean_database_name" {
   project = var.TRUSTUP_APP_KEY
   config = local.DOPPLER_APP_CONFIG_NAME
@@ -113,4 +123,18 @@ resource "doppler_secret" "flare_key" {
   config = local.DOPPLER_APP_CONFIG_NAME
   name = "FLARE_KEY"
   value = lookup(data.doppler_secrets.app.map, "FLARE_KEY", "")
+}
+
+resource "doppler_secret" "deployed_image_tag" {
+  project = var.TRUSTUP_APP_KEY
+  config = local.DOPPLER_APP_CONFIG_NAME
+  name = "DEPLOYED_IMAGE_TAG"
+  value = lookup(data.doppler_secrets.app.map, "DEPLOYED_IMAGE_TAG", var.DOCKER_IMAGE_TAG)
+}
+
+resource "doppler_secret" "kubernetes_version_prefix" {
+  project = var.TRUSTUP_APP_KEY
+  config = local.DOPPLER_APP_CONFIG_NAME
+  name = "KUBERNETES_VERSION_PREFIX"
+  value = lookup(data.doppler_secrets.app.map, "KUBERNETES_VERSION_PREFIX", local.kubernetes_latest_version_prefix)
 }

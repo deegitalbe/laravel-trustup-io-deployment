@@ -1,4 +1,8 @@
 locals {
+  docker_image_tag = var.IS_FALLBACK_DEPLOY ? doppler_secret.deployed_image_tag.value : var.DOCKER_IMAGE_TAG
+}
+
+locals {
   app = {
     commons = {
       annotations = {
@@ -6,7 +10,7 @@ locals {
       }
       docker: {
         placeholder = "{{name}}"
-        image = "${data.doppler_secrets.ci_commons.map.DOCKERHUB_USERNAME}/${var.TRUSTUP_APP_KEY}-{{name}}:${var.DOCKER_IMAGE_TAG}"
+        image = "${data.doppler_secrets.ci_commons.map.DOCKERHUB_USERNAME}/${var.TRUSTUP_APP_KEY}-{{name}}:${local.docker_image_tag}"
       }
     }
     cron = {
@@ -63,4 +67,6 @@ locals {
       ]
     }
   }
+  tags = [ "monitoring" ]
+  is_production = var.APP_ENVIRONMENT == "production"
 }

@@ -18,7 +18,7 @@ resource "kubernetes_stateful_set"  "redis" {
         container {
           name = kubernetes_service.redis.metadata[0].name
           image = "redis:7.0.4"
-          command = ["redis-server", "--appendonly", "yes"]
+          command = ["redis-server", "--appendonly", "no", "--save", "\"\""]
           port {
             name = "web"
             container_port = 6379

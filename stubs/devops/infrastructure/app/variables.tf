@@ -33,3 +33,8 @@ variable "APP_ENVIRONMENT" {
 variable "CLOUDFLARE_ZONE_SECRET" {
   type = string
 }
+
+variable "IS_FALLBACK_DEPLOY" {
+  type = bool
+  default = false
+}

@@ -9,6 +9,13 @@ resource "kubernetes_deployment" "webserver" {
     selector {
       match_labels = local.app.webserver.labels
     }
+    strategy {
+      type = "RollingUpdate"
+      rolling_update {
+        max_surge = 4
+        max_unavailable = 0
+      }
+    }
     template {
       metadata {
         labels = local.app.webserver.labels
@@ -27,5 +34,9 @@ resource "kubernetes_deployment" "webserver" {
         }
       }
     }
+  }
+  timeouts {
+    create = "5m"
+    update = "5m"
   }
 }

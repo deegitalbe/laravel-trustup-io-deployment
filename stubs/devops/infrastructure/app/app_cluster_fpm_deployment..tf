@@ -14,6 +14,13 @@ resource "kubernetes_deployment" "fpm" {
   }
   spec {
     replicas = 1
+    strategy {
+      type = "RollingUpdate"
+      rolling_update {
+        max_surge = 4
+        max_unavailable = 0
+      }
+    }
     selector {
       match_labels = local.app.fpm.labels
     }
@@ -22,34 +29,29 @@ resource "kubernetes_deployment" "fpm" {
         labels = local.app.fpm.labels
       }
       spec {
+        # CREATING FRAMEWORK REQUIRED STORAGE FOLDERS AND CACHING
         init_container {
-            command = ["php"]
-            args = [
-              "artisan",
-              "migrate",
-              "--force",
-            ]
-            env_from {
-              secret_ref {
-                name = kubernetes_secret.app_commons_token.metadata[0].name
-              }
-            }
-            env_from {
-              secret_ref {
-                name = kubernetes_secret.app_token.metadata[0].name
-              }
-            }
-            image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.cli.name)
-            name = "migrations"
-        }
-        container {
+          name = "cache"
+          image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.cli.name)
           command = ["/bin/sh"]
           args = [
             "-c",
-            "php artisan event:cache && php artisan route:cache && php artisan view:cache && exec php-fpm",
+            "php artisan event:cache && php artisan route:cache && php artisan view:cache"
           ]
-          image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.fpm.name)
+          env_from {
+            secret_ref {
+              name = kubernetes_secret.app_commons_token.metadata[0].name
+            }
+          }
+          env_from {
+            secret_ref {
+              name = kubernetes_secret.app_token.metadata[0].name
+            }
+          }
+        }
+        container {
           name = local.app.fpm.name
+          image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.fpm.name)
           env_from {
             secret_ref {
               name = kubernetes_secret.app_commons_token.metadata[0].name
@@ -66,5 +68,9 @@ resource "kubernetes_deployment" "fpm" {
         }
       }
     }
+  }
+  timeouts {
+    create = "5m"
+    update = "5m"
   }
 }

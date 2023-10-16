@@ -1,12 +1,12 @@
 data "digitalocean_sizes" "database_cluster" {
   filter {
     key    = "vcpus"
-    values = [1]
+    values = [local.is_production ? 1 : 1]
   }
 
   filter {
     key    = "memory"
-    values = [1024]
+    values = [local.is_production ? 1024 : 1024]
   }
 
   sort {
@@ -31,6 +31,7 @@ resource "digitalocean_database_cluster" "laravel-in-kubernetes" {
   size = local.database_cluster_size
   region = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_CLUSTER_REGION
   node_count = 1
+  tags = local.tags
 }
 
 # Allowing database access for app cluster

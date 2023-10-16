@@ -2,6 +2,7 @@ resource "kubernetes_service" "webserver" {
   metadata {
     namespace = kubernetes_namespace.app.metadata[0].name
     name = kubernetes_deployment.webserver.metadata[0].name
+    labels = kubernetes_deployment.webserver.metadata[0].labels
   }
   spec {
     selector = kubernetes_deployment.webserver.metadata[0].labels
