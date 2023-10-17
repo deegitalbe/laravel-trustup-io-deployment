@@ -75,7 +75,7 @@ jobs:
           SLACK_USERNAME: TrustUp.IO
           SLACK_ICON: "https://avatars.slack-edge.com/2022-11-24/4423352230964_495f6791123bff9ca3ef_512.png"
           SLACK_TITLE: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }} (${{ needs.prepare_variables.outputs.APP_ENVIRONMENT }})"
-          SLACK_MESSAGE: "Deployment in progress :construction:\n${{ needs.slack_users.outputs.user_mention }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
+          SLACK_MESSAGE: ":construction: Deployment in progress\n${{ needs.slack_users.outputs.user_mention }}\n${{ github.event.head_commit.message }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
           SLACK_COLOR: "#F7BE0B"
           SLACK_FOOTER: "Powered by automated github action"
           SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOY_WEBHOOK_URL }}
@@ -157,7 +157,7 @@ jobs:
         name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ~1.6.1
+          terraform_version: ~1.5.7
       -
         name: Terraform init
         run: |
@@ -191,7 +191,7 @@ jobs:
         name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ~1.6.1
+          terraform_version: ~1.5.7
       -
         name: Terraform init
         run: |
@@ -233,7 +233,7 @@ jobs:
         name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ~1.6.1
+          terraform_version: ~1.5.7
       -
         name: Terraform init
         run: |
@@ -269,7 +269,7 @@ jobs:
         name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ~1.6.1
+          terraform_version: ~1.5.7
       -
         name: Terraform init
         run: |
@@ -311,7 +311,7 @@ jobs:
         name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ~1.6.1
+          terraform_version: ~1.5.7
       -
         name: Terraform init
         run: |
@@ -340,7 +340,7 @@ jobs:
           SLACK_USERNAME: TrustUp.IO
           SLACK_ICON: "https://avatars.slack-edge.com/2022-11-24/4423352230964_495f6791123bff9ca3ef_512.png"
           SLACK_TITLE: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }} (${{ needs.prepare_variables.outputs.APP_ENVIRONMENT }})"
-          SLACK_MESSAGE: "Deployment failed :rotating_light:\nAdversity leads to greatness :male_mage:\n${{ needs.slack_users.outputs.user_mention }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
+          SLACK_MESSAGE: ":rotating_light: Deployment failed\nAdversity leads to greatness :male_mage:\n${{ needs.slack_users.outputs.user_mention }}\n${{ github.event.head_commit.message }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
           SLACK_COLOR: "#F8312F"
           SLACK_FOOTER: "Powered by automated github action"
           SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOY_WEBHOOK_URL }}
@@ -361,7 +361,7 @@ jobs:
           SLACK_USERNAME: TrustUp.IO
           SLACK_ICON: "https://avatars.slack-edge.com/2022-11-24/4423352230964_495f6791123bff9ca3ef_512.png"
           SLACK_TITLE: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }} (${{ needs.prepare_variables.outputs.APP_ENVIRONMENT }})"
-          SLACK_MESSAGE: "Deployment cancelled :man-gesturing-no:\n${{ needs.slack_users.outputs.user_mention }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
+          SLACK_MESSAGE: ":man-gesturing-no: Deployment cancelled\n${{ needs.slack_users.outputs.user_mention }}\n${{ github.event.head_commit.message }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
           SLACK_COLOR: "#d1d5db"
           SLACK_FOOTER: "Powered by automated github action"
           SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOY_WEBHOOK_URL }}
@@ -381,6 +381,6 @@ jobs:
           SLACK_USERNAME: TrustUp.IO
           SLACK_ICON: "https://avatars.slack-edge.com/2022-11-24/4423352230964_495f6791123bff9ca3ef_512.png"
           SLACK_TITLE: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }} (${{ needs.prepare_variables.outputs.APP_ENVIRONMENT }})"
-          SLACK_MESSAGE: "Deployment succeeded :rocket:\n${{ needs.slack_users.outputs.user_mention }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
+          SLACK_MESSAGE: ":rocket: Deployment succeeded\n${{ needs.slack_users.outputs.user_mention }}\n${{ github.event.head_commit.message }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
           SLACK_FOOTER: "Powered by automated github action"
           SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOY_WEBHOOK_URL }}

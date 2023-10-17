@@ -9,23 +9,23 @@ resource "kubernetes_job" "migrations" {
   ]
   metadata {
     annotations = local.app.commons.annotations
-    labels = local.app.init.labels
-    name = "migrations"
+    labels = local.app.migrations.labels
+    name = local.app.migrations.name
     namespace = kubernetes_namespace.app.metadata[0].name
   }
   spec {
     template {
       metadata {
-        labels = local.app.init.labels
+        labels = local.app.migrations.labels
       }
       spec {
         container {
-          name = "migrations"
+          name = local.app.migrations.name
           image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.cli.name)
           command = ["/bin/sh"]
           args = [
             "-c",
-            "php artisan migrate --force && php artisan tenants:migrate --force",
+            "php artisan migrate --force",
           ]
           env_from {
             secret_ref {

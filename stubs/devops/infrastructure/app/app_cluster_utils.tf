@@ -54,6 +54,13 @@ locals {
       }
       name = "webserver"
     }
+    migrations = {
+      labels = {
+        tier = "backend"
+        layer = "init"
+      }
+      name = "migrations"
+    }
   }
   doppler = {
     namespace = "doppler-operator-system"

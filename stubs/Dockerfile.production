@@ -1,11 +1,5 @@
 # PHP EXTENSIONS REQUIRED TO RUN APPLICATION
-ARG PHP_EXTENSIONS="ctype curl dom fileinfo filter hash mbstring openssl pdo pdo_mysql session tokenizer xml"
-
-# PHP EXTENSIONS REQUIRED TO RUN PHP EXTENSIONS
-ARG PHP_EXTENSIONS_DEPENDENCIES=""
-
-# PHP EXTENSIOSN REQUIRED TO BUILD REQUIRED EXTENSIONS
-ARG PHP_BUILD_EXTENSIONS=""
+ARG PHP_EXTENSIONS="pdo_mysql"
 
 # SCRIPT TO BUILD ASSETS
 ARG FRONTEND_BUILD_SCRIPT="build"
@@ -15,41 +9,21 @@ ARG FRONTEND_BUILD_SCRIPT="build"
 # We need to build the Composer base to reuse packages we've installed
 FROM composer:2.5.8 as composer_base
 
-# We need to declare that we want to use the args in this build step
-ARG PHP_EXTENSIONS
-ARG PHP_BUILD_EXTENSIONS
-ARG PHP_EXTENSIONS_DEPENDENCIES
-
 # First, create the application directory, and some auxilary directories for scripts and such
 RUN mkdir -p /opt/apps/laravel-in-kubernetes /opt/apps/laravel-in-kubernetes/bin
 
 # Next, set our working directory
 WORKDIR /opt/apps/laravel-in-kubernetes
 
+# ACTIVATING PNCTL EXTENSION
+RUN docker-php-ext-configure pcntl --enable-pcntl && \
+    docker-php-ext-install pcntl
+
 # We need to create a composer group and user, and create a home directory for it, so we keep the rest of our image safe,
 # And not accidentally run malicious scripts
 RUN addgroup -S composer \
     && adduser -S composer -G composer \
     && chown -R composer /opt/apps/laravel-in-kubernetes
-
-# ADDING BUILD DEPENDENCIES
-# RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} ${PHP_BUILD_EXTENSIONS}
-
-# ADDING EXTENSIONS DEPENDENCIES
-# RUN apk add --no-cache ${PHP_EXTENSIONS_DEPENDENCIES}
-
-# ACTIVATING EXTENSIONS
-RUN docker-php-ext-install -j$(nproc) ${PHP_EXTENSIONS}
-
-# INSTALLING REDIS EXTENSION
-RUN curl 'http://pecl.php.net/get/redis-6.0.0.tgz' -o redis-6.0.0.tgz \
-    && pecl install redis-6.0.0.tgz \
-    && rm -rf redis-6.0.0.tgz \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable redis
-
-# REMOVING BUILD DEPENDENCIES
-RUN apk del build-dependencies
 
 # Next we want to switch over to the composer user before running installs.
 # This is very important, so any extra scripts that composer wants to run,
@@ -113,26 +87,24 @@ FROM php:8.2-alpine as cli
 
 # We need to declare that we want to use the args in this build step
 ARG PHP_EXTENSIONS
-ARG PHP_BUILD_EXTENSIONS
-ARG PHP_EXTENSIONS_DEPENDENCIES
 
 WORKDIR /opt/apps/laravel-in-kubernetes
 
-# ADDING BUILD DEPENDENCIES
-# RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} ${PHP_BUILD_EXTENSIONS}
-
-# ADDING EXTENSIONS DEPENDENCIES
-# RUN apk add --no-cache ${PHP_EXTENSIONS_DEPENDENCIES}
+# BUILD COMPILER DEPENDENCIES
+RUN apk add --virtual build-dependencies ${PHPIZE_DEPS}
 
 # ACTIVATING EXTENSIONS
 RUN docker-php-ext-install -j$(nproc) ${PHP_EXTENSIONS}
 
-# INSTALLING REDIS EXTENSION
-RUN curl 'http://pecl.php.net/get/redis-6.0.0.tgz' -o redis-6.0.0.tgz \
-    && pecl install redis-6.0.0.tgz \
-    && rm -rf redis-6.0.0.tgz \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable redis
+# ACTIVATING PNCTL EXTENSION
+RUN docker-php-ext-configure pcntl --enable-pcntl && \
+    docker-php-ext-install pcntl
+
+# ADDING REDIS SERVER
+RUN pecl install redis
+
+# ACTIVATING REDIS EXTENSION
+RUN docker-php-ext-enable redis
 
 # REMOVING BUILD DEPENDENCIES
 RUN apk del build-dependencies
@@ -140,7 +112,7 @@ RUN apk del build-dependencies
 # Next we have to copy in our code base from our initial build which we installed in the previous stage
 COPY --from=composer_base /opt/apps/laravel-in-kubernetes /opt/apps/laravel-in-kubernetes
 # COPY --from=frontend /opt/apps/laravel-in-kubernetes/node_modules /opt/apps/laravel-in-kubernetes/node_modules
-COPY --from=frontend --chown=www-data /opt/apps/laravel-in-kubernetes/public /opt/apps/laravel-in-kubernetes/public
+# COPY --from=frontend --chown=www-data /opt/apps/laravel-in-kubernetes/public /opt/apps/laravel-in-kubernetes/public
 
 # ----------------------------------------
 
@@ -149,27 +121,25 @@ FROM php:8.2-fpm-alpine as fpm_server
 
 # We need to declare that we want to use the args in this build step
 ARG PHP_EXTENSIONS
-ARG PHP_BUILD_EXTENSIONS
 ARG PHP_PECL_EXTS
-ARG PHP_EXTENSIONS_DEPENDENCIES
 
 WORKDIR /opt/apps/laravel-in-kubernetes
 
-# ADDING BUILD DEPENDENCIES
-# RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} ${PHP_BUILD_EXTENSIONS}
-
-# ADDING EXTENSIONS DEPENDENCIES
-# RUN apk add --no-cache ${PHP_EXTENSIONS_DEPENDENCIES}
+# BUILD COMPILER DEPENDENCIES
+RUN apk add --virtual build-dependencies ${PHPIZE_DEPS}
 
 # ACTIVATING EXTENSIONS
 RUN docker-php-ext-install -j$(nproc) ${PHP_EXTENSIONS}
 
-# INSTALLING REDIS EXTENSION
-RUN curl 'http://pecl.php.net/get/redis-6.0.0.tgz' -o redis-6.0.0.tgz \
-    && pecl install redis-6.0.0.tgz \
-    && rm -rf redis-6.0.0.tgz \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable redis
+# ACTIVATING PNCTL EXTENSION
+RUN docker-php-ext-configure pcntl --enable-pcntl && \
+    docker-php-ext-install pcntl
+
+# ADDING REDIS SERVER
+RUN pecl install redis
+
+# ACTIVATING REDIS EXTENSION
+RUN docker-php-ext-enable redis
 
 # REMOVING BUILD DEPENDENCIES
 RUN apk del build-dependencies
