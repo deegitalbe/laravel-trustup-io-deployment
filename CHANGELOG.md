@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.2.1
+
+### Patch Changes
+
+- 2c03e9e: Fixing boilerplate with real project.
+
 ## 1.2.0
 
 ### Minor Changes
