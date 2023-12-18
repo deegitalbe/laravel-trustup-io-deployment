@@ -7,7 +7,9 @@ ARG FRONTEND_BUILD_SCRIPT="build"
 # ----------------------------------------
 
 # We need to build the Composer base to reuse packages we've installed
-FROM composer:2.5.8 as composer_base
+FROM php:8.2-alpine as composer_base
+
+COPY --from=composer:2.5.8 /usr/bin/composer /usr/bin/composer
 
 # First, create the application directory, and some auxilary directories for scripts and such
 RUN mkdir -p /opt/apps/laravel-in-kubernetes /opt/apps/laravel-in-kubernetes/bin
