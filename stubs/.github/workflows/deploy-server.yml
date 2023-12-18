@@ -384,3 +384,20 @@ jobs:
           SLACK_MESSAGE: ":rocket: Deployment succeeded\n${{ needs.slack_users.outputs.user_mention }}\n${{ github.event.head_commit.message }}\n<https://${{ needs.prepare_variables.outputs.APP_URL }}|See application>"
           SLACK_FOOTER: "Powered by automated github action"
           SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOY_WEBHOOK_URL }}
+
+  configure_bucket_dns:
+    name: "Configure bucket DNS"
+    runs-on: unbuntu-latest
+    needs:
+      - prepare_variables
+      - deploy_app
+    steps:
+      - 
+        name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      -
+        name: Configure DNS
+        run: \
+          doctl compute cdn create ${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}.ams3.digitaloceanspaces.com --domain=${{ needs.prepare_variables.outputs.BUCKET_URL }} --certificate-id=needs-cloudflare-cert

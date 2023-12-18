@@ -100,7 +100,7 @@ resource "doppler_secret" "bucket_cdn_url" {
   project = var.TRUSTUP_APP_KEY
   config = local.DOPPLER_APP_CONFIG_NAME
   name = "DO_URL"
-  value = "https://${digitalocean_cdn.main_bucket.custom_domain}"
+  value = "https://${var.BUCKET_URL}"
 }
 
 resource "doppler_secret" "app_name" {
