@@ -1,5 +1,18 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.3.0
+
+### Minor Changes
+
+- b936d5e: Using release/v\*\* deployment hook. We're now able to push to any release branch and deploy staging environment.
+- 5b75f02: Using registry cache for docker images build.
+
+### Patch Changes
+
+- e187427: Workaround for bucket DNS error. For unknown reason, digitalocean refuses cloudflare dns certificates. We have to execute a doctl command to magically let digitalocean autogenerate certificate.
+- 5c40d47: Fixing several terraform issues. (storage volume mount, migration running once, keep application running during update, redis not saving snapshots, kubernetes size depending on environment)
+- 6bcdeea: Using php8.2 as base for production docker composer build step. We were using composer image using any upcoming php version breaking image composer lock.
+
 ## 1.2.1
 
 ### Patch Changes
