@@ -30,6 +30,12 @@ locals {
       }
       name = "fpm"
     }
+    init = {
+      labels = {
+        tier = "backend"
+        layer = "init"
+      }
+    }
     queue_worker = {
       default = {
         labels = {
@@ -54,13 +60,6 @@ locals {
       }
       name = "webserver"
     }
-    migrations = {
-      labels = {
-        tier = "backend"
-        layer = "init"
-      }
-      name = "migrations"
-    }
   }
   doppler = {
     namespace = "doppler-operator-system"
@@ -76,4 +75,13 @@ locals {
   }
   tags = [ "monitoring" ]
   is_production = var.APP_ENVIRONMENT == "production"
+  storage = {
+    local = {
+      claim = { name = "local-storage-claim" }
+      volume = {
+        name = "local-storage-volume"
+        path = "/opt/apps/laravel-in-kubernetes/storage"
+      }
+    }
+  }
 }

@@ -18,6 +18,7 @@ resource "kubernetes_stateful_set"  "redis" {
         container {
           name = kubernetes_service.redis.metadata[0].name
           image = "redis:7.0.4"
+          # Disabling persistence
           command = ["redis-server", "--appendonly", "no", "--save", "\"\""]
           port {
             name = "web"

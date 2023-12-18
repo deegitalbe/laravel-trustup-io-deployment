@@ -6,15 +6,15 @@ resource "kubernetes_deployment" "webserver" {
   }
   spec {
     replicas = 1
-    selector {
-      match_labels = local.app.webserver.labels
-    }
     strategy {
       type = "RollingUpdate"
       rolling_update {
-        max_surge = 4
-        max_unavailable = 0
+        max_surge = 0
+        max_unavailable = 1
       }
+    }
+    selector {
+      match_labels = local.app.webserver.labels
     }
     template {
       metadata {
@@ -36,7 +36,7 @@ resource "kubernetes_deployment" "webserver" {
     }
   }
   timeouts {
-    create = "5m"
-    update = "5m"
+    create = "3m"
+    update = "3m"
   }
 }

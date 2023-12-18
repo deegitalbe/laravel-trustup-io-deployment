@@ -9,18 +9,18 @@ resource "kubernetes_job" "migrations" {
   ]
   metadata {
     annotations = local.app.commons.annotations
-    labels = local.app.migrations.labels
-    name = local.app.migrations.name
+    labels = local.app.init.labels
+    name = "migrations"
     namespace = kubernetes_namespace.app.metadata[0].name
   }
   spec {
     template {
       metadata {
-        labels = local.app.migrations.labels
+        labels = local.app.init.labels
       }
       spec {
         container {
-          name = local.app.migrations.name
+          name = "migrations"
           image = replace(local.app.commons.docker.image, local.app.commons.docker.placeholder, local.app.cli.name)
           command = ["/bin/sh"]
           args = [
@@ -41,5 +41,10 @@ resource "kubernetes_job" "migrations" {
         restart_policy = "Never"
       }
     }
+    backoff_limit = 0
+  }
+  timeouts {
+    create = "3m"
+    update = "3m"
   }
 }

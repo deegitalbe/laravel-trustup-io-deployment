@@ -12,4 +12,3 @@ resource "kubectl_manifest" "doppler_app_secret" {
   depends_on = [ kubernetes_secret.app_token ]
   yaml_body = file("manifests/doppler/secrets/app/secret.yml")
 }
-

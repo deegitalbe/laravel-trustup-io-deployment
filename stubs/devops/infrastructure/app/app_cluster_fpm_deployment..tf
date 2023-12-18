@@ -4,7 +4,7 @@ resource "kubernetes_deployment" "fpm" {
     kubernetes_secret.app_token,
     kubectl_manifest.doppler,
     kubectl_manifest.doppler_app_commons_secret,
-    kubectl_manifest.doppler_app_secret
+    kubectl_manifest.doppler_app_secret,
   ]
   metadata {
     annotations = local.app.commons.annotations
@@ -17,8 +17,8 @@ resource "kubernetes_deployment" "fpm" {
     strategy {
       type = "RollingUpdate"
       rolling_update {
-        max_surge = 4
-        max_unavailable = 0
+        max_surge = 0
+        max_unavailable = 1
       }
     }
     selector {
@@ -29,6 +29,16 @@ resource "kubernetes_deployment" "fpm" {
         labels = local.app.fpm.labels
       }
       spec {
+        # SETTING UP PERMISSIONS ON STORAGE VOLUME
+        init_container {
+          name = "permissions"
+          image = "busybox"
+          command = ["/bin/chmod","-R","777", "${local.storage.local.volume.path}"]
+          volume_mount {
+            name = local.storage.local.volume.name
+            mount_path = local.storage.local.volume.path
+          }
+        }
         # CREATING FRAMEWORK REQUIRED STORAGE FOLDERS AND CACHING
         init_container {
           name = "cache"
@@ -36,7 +46,7 @@ resource "kubernetes_deployment" "fpm" {
           command = ["/bin/sh"]
           args = [
             "-c",
-            "php artisan event:cache && php artisan route:cache && php artisan view:cache"
+            "mkdir -p ${local.storage.local.volume.path}/framework/session && mkdir -p ${local.storage.local.volume.path}/framework/cache && mkdir -p ${local.storage.local.volume.path}/framework/views && php artisan event:cache && php artisan route:cache && php artisan view:cache"
           ]
           env_from {
             secret_ref {
@@ -47,6 +57,10 @@ resource "kubernetes_deployment" "fpm" {
             secret_ref {
               name = kubernetes_secret.app_token.metadata[0].name
             }
+          }
+          volume_mount {
+            name = local.storage.local.volume.name
+            mount_path = local.storage.local.volume.path
           }
         }
         container {
@@ -64,6 +78,16 @@ resource "kubernetes_deployment" "fpm" {
           }
           port {
             container_port = 9000
+          }
+          volume_mount {
+            name = local.storage.local.volume.name
+            mount_path = local.storage.local.volume.path
+          }
+        }
+        volume {
+          name = local.storage.local.volume.name
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim.local_storage.metadata[0].name
           }
         }
       }

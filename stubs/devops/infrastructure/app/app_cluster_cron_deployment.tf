@@ -17,8 +17,8 @@ resource "kubernetes_deployment" "cron" {
     strategy {
       type = "RollingUpdate"
       rolling_update {
-        max_surge = 4
-        max_unavailable = 0
+        max_surge = 0
+        max_unavailable = 1
       }
     }
     selector {

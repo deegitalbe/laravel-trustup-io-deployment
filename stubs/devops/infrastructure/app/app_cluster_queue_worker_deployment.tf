@@ -4,7 +4,7 @@ resource "kubernetes_deployment" "default_queue_worker" {
     kubernetes_secret.app_token,
     kubectl_manifest.doppler,
     kubectl_manifest.doppler_app_commons_secret,
-    kubectl_manifest.doppler_app_secret
+    kubectl_manifest.doppler_app_secret,
   ]
   metadata {
     namespace = kubernetes_namespace.app.metadata[0].name
@@ -17,8 +17,8 @@ resource "kubernetes_deployment" "default_queue_worker" {
     strategy {
       type = "RollingUpdate"
       rolling_update {
-        max_surge = 4
-        max_unavailable = 0
+        max_surge = 0
+        max_unavailable = 1
       }
     }
     selector {
@@ -50,12 +50,22 @@ resource "kubernetes_deployment" "default_queue_worker" {
               name = kubernetes_secret.app_token.metadata[0].name
             }
           }
+        volume_mount {
+            name = local.storage.local.volume.name
+            mount_path = local.storage.local.volume.path
+          }
+        }
+        volume {
+          name = local.storage.local.volume.name
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim.local_storage.metadata[0].name
+          }
         }
       }
     }
   }
   timeouts {
-    create = "5m"
-    update = "5m"
+    create = "3m"
+    update = "3m"
   }
 }
