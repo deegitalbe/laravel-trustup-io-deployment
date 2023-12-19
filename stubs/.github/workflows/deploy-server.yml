@@ -166,6 +166,7 @@ jobs:
           -backend-config="key=${{ steps.prepare_variables.outputs.trustup_app_key_suffixed }}-app.tfstate"
     -
       name: Terraform apply app
+      id: terraform_app_apply
       working-directory: ./devops/infrastructure/app
       env:
         TF_VAR_DOPPLER_ACCESS_TOKEN_USER: "${{ secrets.DOPPLER_ACCESS_TOKEN_USER }}"
@@ -205,7 +206,7 @@ jobs:
       run: terraform apply -auto-approve
     -
       name: Terraform init fallback
-      if: ${{ failure() }}
+      if: ${{ steps.terraform_app_apply.conclusion == 'failure' }}
       working-directory: ./devops/infrastructure/app
       env:
         TF_VAR_DOPPLER_ACCESS_TOKEN_USER: "${{ secrets.DOPPLER_ACCESS_TOKEN_USER }}"
@@ -226,7 +227,7 @@ jobs:
           -backend-config="key=${{ steps.prepare_variables.outputs.trustup_app_key_suffixed }}-app.tfstate"
     -
       name: Terraform apply fallback
-      if: ${{ failure() }}
+      if: ${{ steps.terraform_app_apply.conclusion == 'failure' }}
       working-directory: ./devops/infrastructure/app
       env:
         TF_VAR_DOPPLER_ACCESS_TOKEN_USER: "${{ secrets.DOPPLER_ACCESS_TOKEN_USER }}"
