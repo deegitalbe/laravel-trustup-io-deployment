@@ -17,8 +17,8 @@ resource "kubernetes_deployment" "default_queue_worker" {
     strategy {
       type = "RollingUpdate"
       rolling_update {
-        max_surge = 0
-        max_unavailable = 1
+        max_surge = 1
+        max_unavailable = 0
       }
     }
     selector {
