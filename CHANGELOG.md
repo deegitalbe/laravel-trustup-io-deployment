@@ -1,5 +1,12 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.4.1
+
+### Patch Changes
+
+- b8c2f1e: Fallback application only if error occured during application rollout.
+- a53b934: Forcing pods to stay alive while new pods are created during rollout.
+
 ## 1.4.0
 
 ### Minor Changes
