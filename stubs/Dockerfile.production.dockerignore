@@ -28,3 +28,17 @@ Dockerfile
 README.md
 
 vendor
+/devops/infrastructure
+/.github
+/scripts
+/tests
+/dockerdependencies
+/.editorconfig
+/.env
+/.gitattributes
+/cli
+/docker-compose.yml
+/docker-compose.production
+/Makefile
+/phpunit.xml
+/README.md
