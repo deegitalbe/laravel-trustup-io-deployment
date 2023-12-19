@@ -1,5 +1,16 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.4.0
+
+### Minor Changes
+
+- 8cc41c9: Using single job to speed up github action process. Avoiding loads of billing cost since github bills us at least 1min for each job even if it ends after 1sec.
+
+### Patch Changes
+
+- 0e70e04: Ignoring some files for docker in production environment.
+- 95f6f12: Updating traefik values to new specification.
+
 ## 1.3.0
 
 ### Minor Changes
