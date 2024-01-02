@@ -76,30 +76,24 @@ jobs:
         target: cron
         push: true
         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-cron:${{ github.sha }}"
-        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-cron:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-cron:buildcache,mode=max
     - 
       name: Build and push fpm image
       uses: docker/build-push-action@v5
       with:
         context: .
         file: Dockerfile.production
-        target: fpm_server
+        target: fpm
         push: true
         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-fpm:${{ github.sha }}"
-        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-fpm:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-fpm:buildcache,mode=max
     - 
       name: Build and push web image
       uses: docker/build-push-action@v5
       with:
         context: .
         file: Dockerfile.production
-        target: web_server
+        target: web
         push: true
         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-web:${{ github.sha }}"
-        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-web:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.prepare_variables.outputs.trustup_app_key }}-web:buildcache,mode=max
     -
       name: Install Terraform
       uses: hashicorp/setup-terraform@v2
