@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.4.2
+
+### Patch Changes
+
+- 2ded063: Using optimized dockerfile for faster build process.
+
 ## 1.4.1
 
 ### Patch Changes
