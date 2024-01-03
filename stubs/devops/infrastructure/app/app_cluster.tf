@@ -54,7 +54,7 @@ resource "digitalocean_kubernetes_cluster" "laravel-in-kubernetes" {
     size = "${element(data.digitalocean_sizes.app_cluster.sizes, 0).slug}"
     # We can autoscale our cluster according to use, and if it gets high,
     # We can auto scale to maximum 5 nodes.
-    auto_scale = local.is_production ? true : false
+    auto_scale = true
     min_nodes = 1
     # Scale up values
     max_nodes = local.is_production ? 1 : 1
