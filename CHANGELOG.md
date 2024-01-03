@@ -1,5 +1,11 @@
 # @deegital/laravel-trustup-io-deployment
 
+## 1.4.3
+
+### Patch Changes
+
+- f726cd9: Cluster autoscale parameter is compulsory true.
+
 ## 1.4.2
 
 ### Patch Changes
